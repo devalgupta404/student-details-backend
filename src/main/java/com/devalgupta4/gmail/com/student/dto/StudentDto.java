@@ -1,12 +1,12 @@
 package com.devalgupta4.gmail.com.student.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
- @Data
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
+ @Getter
+ @Setter
 public class StudentDto {
     private Long id;
     private String name;

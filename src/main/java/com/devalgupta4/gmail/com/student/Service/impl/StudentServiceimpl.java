@@ -23,4 +23,10 @@ public class StudentServiceimpl implements StudentService {
                 .map(student -> modelMapper.map(student,StudentDto.class))
                 .toList();
     }
+
+    @Override
+    public StudentDto getStudentById(Long id) {
+        Student student = studentRepository.findById(id).orElseThrow(()->new IllegalArgumentException("Student not found by IB: "+id));
+        return modelMapper.map(student, StudentDto.class);
+    }
 }

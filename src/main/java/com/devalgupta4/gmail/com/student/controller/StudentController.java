@@ -28,6 +28,9 @@ public class StudentController {
     public ResponseEntity<StudentDto>getStudentById(@PathVariable Long id){
        return  ResponseEntity.ok(studentService.getStudentById(id));
     }
-
+    @PostMapping
+    public ResponseEntity<StudentDto>createNewStudent(@RequestBody @Valid AddStudentRequestDto addStudentRequestDto){
+        return ResponseEntity.status(HttpStatus.CREATED).body(studentService.createNewStudent(addStudentRequestDto));
+    }
 
 }

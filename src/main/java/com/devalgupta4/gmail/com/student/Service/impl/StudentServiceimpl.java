@@ -1,6 +1,7 @@
 package com.devalgupta4.gmail.com.student.Service.impl;
 
 import com.devalgupta4.gmail.com.student.Service.StudentService;
+import com.devalgupta4.gmail.com.student.dto.AddStudentRequestDto;
 import com.devalgupta4.gmail.com.student.dto.StudentDto;
 import com.devalgupta4.gmail.com.student.entity.Student;
 import com.devalgupta4.gmail.com.student.repository.StudentRepository;
@@ -15,6 +16,14 @@ import java.util.List;
 public class StudentServiceimpl implements StudentService {
     private final StudentRepository studentRepository;
     private final ModelMapper modelMapper;
+
+    @Override
+    public StudentDto createNewStudent(AddStudentRequestDto addStudentRequestDto) {
+        Student newStudent = modelMapper.map(addStudentRequestDto,Student.class);
+        Student student = studentRepository.save(newStudent);
+        return modelMapper.map(student, StudentDto.class);
+    }
+
     @Override
     public List<StudentDto> getAllStudents() {
         List<Student>students = studentRepository.findAll();

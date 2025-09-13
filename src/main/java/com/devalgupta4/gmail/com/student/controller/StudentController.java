@@ -1,12 +1,14 @@
 package com.devalgupta4.gmail.com.student.controller;
 
 import com.devalgupta4.gmail.com.student.Service.StudentService;
+import com.devalgupta4.gmail.com.student.dto.AddStudentRequestDto;
 import com.devalgupta4.gmail.com.student.dto.StudentDto;
+import jakarta.validation.Valid;
+import lombok.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,4 +28,6 @@ public class StudentController {
     public ResponseEntity<StudentDto>getStudentById(@PathVariable Long id){
        return  ResponseEntity.ok(studentService.getStudentById(id));
     }
+
+
 }

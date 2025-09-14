@@ -38,4 +38,12 @@ public class StudentServiceimpl implements StudentService {
         Student student = studentRepository.findById(id).orElseThrow(()->new IllegalArgumentException("Student not found by IB: "+id));
         return modelMapper.map(student, StudentDto.class);
     }
+
+    @Override
+    public void deleteStudentByid(Long id) {
+        if(!studentRepository.existsById(id)) {
+            throw new IllegalArgumentException("Student does not exists by id: "+id);
+        }
+        studentRepository.deleteById(id);
+    }
 }

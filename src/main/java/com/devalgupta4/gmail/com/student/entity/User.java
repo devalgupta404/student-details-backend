@@ -22,8 +22,6 @@ public class User {
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Item> items;
-
-    // Constructor for easy creation
     public User() {}
 
     public User(String name, String email) {

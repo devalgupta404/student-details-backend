@@ -1,11 +1,9 @@
 package com.devalgupta4.gmail.com.student.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -15,15 +13,42 @@ public class Item {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String OwnerId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "owner_id")
+    private User owner;
 
-    private String ItemName;
+    private String itemName;
 
-    private Double Price;
+    private Double price;
 
-    private String Category;
+    private String category;
 
-    private String Description;
+    private String description;
 
-    private String Url;
+    private String imageUrl;
+
+    private LocalDateTime createdAt;
+
+    private LocalDateTime updatedAt;
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = LocalDateTime.now();
+    }
+
+    public Item() {}
+
+    public Item(String itemName, Double price, String category, String description, User owner) {
+        this.itemName = itemName;
+        this.price = price;
+        this.category = category;
+        this.description = description;
+        this.owner = owner;
+    }
 }

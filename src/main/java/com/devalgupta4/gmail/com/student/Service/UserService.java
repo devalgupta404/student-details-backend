@@ -28,8 +28,6 @@ public class UserService {
         if (userRepository.existsByEmail(request.getEmail())) {
             throw new IllegalArgumentException("User with this email already exists");
         }
-
-        // Extract domain and upsert into Domain list
         String domainName = extractDomain(request.getEmail());
         if (domainName != null && !domainRepository.existsByNameIgnoreCase(domainName)) {
             domainRepository.save(new Domain(domainName.toLowerCase()));

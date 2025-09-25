@@ -3,7 +3,7 @@ package com.devalgupta4.gmail.com.student.Service.impl;
 import com.devalgupta4.gmail.com.student.Service.StudentService;
 import com.devalgupta4.gmail.com.student.dto.AddStudentRequestDto;
 import com.devalgupta4.gmail.com.student.dto.StudentDto;
-import com.devalgupta4.gmail.com.student.entity.Student;
+import com.devalgupta4.gmail.com.student.entity.User;
 import com.devalgupta4.gmail.com.student.repository.StudentRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -19,24 +19,24 @@ public class StudentServiceimpl implements StudentService {
 
     @Override
     public StudentDto createNewStudent(AddStudentRequestDto addStudentRequestDto) {
-        Student newStudent = modelMapper.map(addStudentRequestDto,Student.class);
-        Student student = studentRepository.save(newStudent);
-        return modelMapper.map(student, StudentDto.class);
+        User newUser = modelMapper.map(addStudentRequestDto, User.class);
+        User user = studentRepository.save(newUser);
+        return modelMapper.map(user, StudentDto.class);
     }
 
     @Override
     public List<StudentDto> getAllStudents() {
-        List<Student>students = studentRepository.findAll();
-        return students
+        List<User> users = studentRepository.findAll();
+        return users
                 .stream()
-                .map(student -> modelMapper.map(student,StudentDto.class))
+                .map(user -> modelMapper.map(user, StudentDto.class))
                 .toList();
     }
 
     @Override
     public StudentDto getStudentById(Long id) {
-        Student student = studentRepository.findById(id).orElseThrow(()->new IllegalArgumentException("Student not found by IB: "+id));
-        return modelMapper.map(student, StudentDto.class);
+        User user = studentRepository.findById(id).orElseThrow(()->new IllegalArgumentException("Student not found by ID: "+id));
+        return modelMapper.map(user, StudentDto.class);
     }
 
     @Override
@@ -49,9 +49,9 @@ public class StudentServiceimpl implements StudentService {
 
     @Override
     public StudentDto updateStudent(Long id, AddStudentRequestDto addStudentRequestDto) {
-        Student student = studentRepository.findById(id).orElseThrow(()-> new IllegalArgumentException(("Student not found by id : "+id)));
-        modelMapper.map(addStudentRequestDto, student);
-        student = studentRepository.save(student);
-        return modelMapper.map(student, StudentDto.class);
+        User user = studentRepository.findById(id).orElseThrow(()-> new IllegalArgumentException(("Student not found by id : "+id)));
+        modelMapper.map(addStudentRequestDto, user);
+        user = studentRepository.save(user);
+        return modelMapper.map(user, StudentDto.class);
     }
 }

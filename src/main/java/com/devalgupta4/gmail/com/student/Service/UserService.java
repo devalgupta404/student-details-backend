@@ -6,7 +6,9 @@ import com.devalgupta4.gmail.com.student.entity.User;
 import com.devalgupta4.gmail.com.student.repository.DomainRepository;
 import com.devalgupta4.gmail.com.student.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,20 +22,28 @@ public class UserService {
     @Autowired
     private DomainRepository domainRepository;
 
+    @Transactional
     public User createUser(CreateUserRequestDto request) {
         if (!isValidEmailFormat(request.getEmail())) {
             throw new IllegalArgumentException("Invalid email format");
         }
 
-        if (userRepository.existsByEmail(request.getEmail())) {
+        String normalizedEmail = request.getEmail().trim().toLowerCase();
+
+        if (userRepository.existsByEmail(normalizedEmail)) {
             throw new IllegalArgumentException("User with this email already exists");
         }
-        String domainName = extractDomain(request.getEmail());
+
+        String domainName = extractDomain(normalizedEmail);
         if (domainName != null && !domainRepository.existsByNameIgnoreCase(domainName)) {
-            domainRepository.save(new Domain(domainName.toLowerCase()));
+            try {
+                domainRepository.save(new Domain(domainName.toLowerCase()));
+            } catch (DataIntegrityViolationException ignored) {
+                // created concurrently, safe to ignore
+            }
         }
 
-        User user = new User(request.getName(), request.getEmail());
+        User user = new User(request.getName(), normalizedEmail);
         return userRepository.save(user);
     }
 
